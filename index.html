@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORBIT — Search Intelligence: From Keywords to Authority</title>
+  <style>
+    /* ==========================================================================
+       ORBIT SEARCH INTELLIGENCE — DESIGN SYSTEM & STYLES
+       Deep Midnight Theme (#080B14) with Electric Blue, Violet & Cyan Accents
+       Zero External Dependencies — 100% Self-Contained
+       ========================================================================== */
+
+    :root {
+      --bg-midnight: #080B14;
+      --bg-surface: #0E1322;
+      --bg-surface-elevated: #141B30;
+      --bg-card: rgba(18, 24, 43, 0.78);
+      --bg-card-hover: rgba(26, 35, 62, 0.9);
+      --bg-glass: rgba(14, 19, 34, 0.7);
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.15);
+      --border-glow: rgba(99, 102, 241, 0.35);
+
+      --accent-cyan: #00F0FF;
+      --accent-cyan-glow: rgba(0, 240, 255, 0.25);
+      --accent-blue: #3B82F6;
+      --accent-blue-glow: rgba(59, 130, 246, 0.25);
+      --accent-violet: #8B5CF6;
+      --accent-violet-glow: rgba(139, 92, 246, 0.25);
+      --accent-indigo: #6366F1;
+
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --text-bright: #FFFFFF;
+
+      --gold: #F59E0B;
+      --gold-glow: rgba(245, 158, 11, 0.2);
+      --rose: #F43F5E;
+      --emerald: #10B981;
+
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-midnight);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.55;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Glow & Interactive Orbital Background Canvas */
+    #orbit-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    .ambient-glow-top {
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main Container */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 24px 28px 80px 28px;
+    }
+
+    /* ==========================================================================
+       NAVIGATION & HEADER BAR
+       ========================================================================== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      margin-bottom: 40px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-logo-wrap {
+      width: 44px;
+      height: 44px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6));
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #FFFFFF 0%, #00F0FF 60%, #8B5CF6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-lab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .badge-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .spin {
+      animation: spinAnimation 0.8s linear infinite;
+    }
+
+    @keyframes spinAnimation {
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-medium);
+      padding: 9px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      transform: translateY(-1px);
+    }
+
+    .btn-recalc {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #E0E7FF;
+    }
+
+    .btn-recalc:hover {
+      border-color: var(--accent-violet);
+      box-shadow: 0 0 16px var(--accent-violet-glow);
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       HERO SECTION: THE SCIENCE BEHIND WHAT YOU FIND
+       ========================================================================== */
+    .hero-section {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 48px auto;
+    }
+
+    .hero-pretitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 16px;
+      padding: 4px 14px;
+      background: rgba(0, 240, 255, 0.06);
+      border-radius: 999px;
+      border: 1px solid rgba(0, 240, 255, 0.18);
+    }
+
+    .hero-title {
+      font-size: 2.85rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 20%, #60A5FA 60%, #C084FC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 680px;
+      margin: 0 auto 36px auto;
+    }
+
+    /* Search Box & Controls */
+    .search-wrapper {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto 20px auto;
+    }
+
+    .search-bar-outer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(14, 19, 34, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      padding: 7px 8px 7px 22px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      transition: var(--transition);
+    }
+
+    .search-bar-outer:focus-within {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 240, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .search-icon {
+      width: 22px;
+      height: 22px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      margin-right: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 1.1rem;
+      color: var(--text-bright);
+      font-family: inherit;
+    }
+
+    .search-input::placeholder {
+      color: #64748B;
+      font-size: 1.02rem;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 8px;
+      transition: var(--transition);
+    }
+
+    .clear-btn:hover {
+      color: var(--text-bright);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .search-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 999px;
+      padding: 13px 28px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4);
+      font-family: inherit;
+      flex-shrink: 0;
+    }
+
+    .search-btn:hover {
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.6);
+      transform: scale(1.02);
+    }
+
+    .search-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Example Search Chips */
+    .chips-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chips-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-right: 4px;
+    }
+
+    .chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(18, 24, 43, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .chip-btn:hover {
+      background: var(--bg-surface-elevated);
+      border-color: rgba(0, 240, 255, 0.4);
+      color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .chip-btn.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--accent-cyan);
+      color: var(--text-bright);
+      box-shadow: 0 0 14px var(--accent-cyan-glow);
+    }
+
+    /* ==========================================================================
+       THE SURFER LAB: LIVE SIMULATION STATISTICS
+       ========================================================================== */
+    .surfer-lab-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      margin-bottom: 48px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surfer-lab-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent-cyan) 30%, var(--accent-violet) 70%, transparent 100%);
+    }
+
+    .lab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .lab-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lab-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
+    }
+
+    .lab-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-bright);
+    }
+
+    .lab-badge {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #A5B4FC;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* Statistics Metric Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: rgba(14, 19, 34, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+    }
+
+    .stat-label {
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+    }
+
+    .stat-subtext {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Surfer Explainer Banner */
+    .surfer-explainer-banner {
+      background: rgba(10, 14, 26, 0.6);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .explainer-highlight {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       RESULTS SECTION: TWO VISUALLY DISTINCT RANKING PANELS
+       ========================================================================== */
+    .results-section {
+      margin-bottom: 60px;
+    }
+
+    .results-query-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(14, 19, 34, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .query-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .query-tag {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--accent-cyan);
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .matches-count-badge {
+      font-size: 0.82rem;
+      color: var(--text-bright);
+      font-weight: 600;
+    }
+
+    /* Dual Column Layout */
+    .columns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .algorithm-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .column-header-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .column-header-card.col-1997 {
+      border-top: 3px solid var(--gold);
+    }
+
+    .column-header-card.col-1998 {
+      border-top: 3px solid var(--accent-cyan);
+    }
+
+    .col-era-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .col-1997 .col-era-tag {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .col-1998 .col-era-tag {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    .col-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--text-bright);
+      margin-bottom: 6px;
+    }
+
+    .col-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .col-stats-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    /* Result Card Styles */
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .result-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      transition: var(--transition);
+      position: relative;
+      animation: cardFadeIn 0.3s ease-out;
+    }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .result-card.top-rank-1997 {
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.08);
+    }
+
+    .result-card.top-rank-1998 {
+      border-color: rgba(0, 240, 255, 0.45);
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.12);
+    }
+
+    .card-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 12px;
+    }
+
+    .rank-and-url {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .top-rank-1997 .rank-badge {
+      background: linear-gradient(135deg, #D97706, #F59E0B);
+      color: #000;
+      font-weight: 900;
+    }
+
+    .top-rank-1998 .rank-badge {
+      background: linear-gradient(135deg, #0284C7, #00F0FF);
+      color: #000;
+      font-weight: 900;
+    }
+
+    .page-url {
+      font-size: 0.78rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: var(--accent-cyan);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .page-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .page-snippet {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    /* Keyword Highlight */
+    mark.highlight {
+      background: rgba(0, 240, 255, 0.25);
+      color: #FFFFFF;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 700;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+    }
+
+    /* Score Bar & Badges */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .score-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-grow: 1;
+      max-width: 240px;
+    }
+
+    .score-badge {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-1997 {
+      color: var(--gold);
+    }
+
+    .score-1998 {
+      color: var(--accent-cyan);
+    }
+
+    .score-progress-bg {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .score-progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease-out;
+    }
+
+    .bar-1997 {
+      background: linear-gradient(90deg, #D97706, #F59E0B);
+    }
+
+    .bar-1998 {
+      background: linear-gradient(90deg, #2563EB, #00F0FF);
+    }
+
+    .links-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #DDD6FE;
+    }
+
+    .spam-warning-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #FDA4AF;
+    }
+
+    /* Friendly Empty State */
+    .empty-state-box {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 30px;
+      background: var(--bg-card);
+      border: 1px dashed var(--border-medium);
+      border-radius: var(--radius-xl);
+    }
+
+    .empty-icon {
+      width: 56px;
+      height: 56px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .empty-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+    }
+
+    .empty-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 24px auto;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       DATA VISUALISATION: TWO ALGORITHMS, TWO PERSPECTIVES
+       ========================================================================== */
+    .vis-section {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 36px 36px;
+      margin-bottom: 60px;
+    }
+
+    .section-header {
+      margin-bottom: 28px;
+    }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-violet);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 750px;
+    }
+
+    /* Comparison Table / Chart */
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 100px 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
+      background: rgba(14, 19, 34, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+
+    .chart-row:hover {
+      background: rgba(22, 29, 52, 0.8);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .chart-page-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-page-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chart-page-url {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bar-label-group {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .shift-indicator {
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .shift-up {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .shift-down {
+      background: rgba(244, 63, 94, 0.15);
+      color: #FB7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .shift-same {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       HOW IT WORKS SECTION: 1997 vs 1998 ARCHITECTURE
+       ========================================================================== */
+    .how-it-works-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .tech-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+    }
+
+    .tech-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .tech-1997 .tech-badge {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .tech-1998 .tech-badge {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    .tech-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+    }
+
+    .tech-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .diagram-box {
+      background: rgba(8, 11, 20, 0.75);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .diagram-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--text-main);
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       DATASET MODAL / DRAWER
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(4, 7, 13, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-xl);
+      max-width: 980px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+      animation: modalSlide 0.25s ease-out;
+    }
+
+    @keyframes modalSlide {
+      from { opacity: 0; transform: scale(0.96) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-bright);
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 1;
+      padding: 4px;
+      transition: var(--transition);
+    }
+
+    .modal-close-btn:hover {
+      color: var(--text-bright);
+    }
+
+    .modal-body {
+      padding: 24px 28px;
+      overflow-y: auto;
+    }
+
+    .dataset-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      text-align: left;
+    }
+
+    .dataset-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+
+    .dataset-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      vertical-align: top;
+    }
+
+    .dataset-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* ==========================================================================
+       PRESENTATION MODE
+       Enhances typography and layout for classroom projection
+       ========================================================================== */
+    body.presentation-mode {
+      --bg-midnight: #040710;
+    }
+
+    body.presentation-mode .navbar {
+      padding: 12px 20px;
+      margin-bottom: 24px;
+    }
+
+    body.presentation-mode .hero-section {
+      margin-bottom: 32px;
+    }
+
+    body.presentation-mode .hero-title {
+      font-size: 3.4rem;
+    }
+
+    body.presentation-mode .hero-subtitle {
+      font-size: 1.25rem;
+    }
+
+    body.presentation-mode .col-title {
+      font-size: 1.55rem;
+    }
+
+    body.presentation-mode .page-title {
+      font-size: 1.15rem;
+    }
+
+    body.presentation-mode .score-badge {
+      font-size: 0.95rem;
+    }
+
+    body.presentation-mode .how-it-works-grid,
+    body.presentation-mode .surfer-explainer-banner {
+      display: none;
+    }
+
+    .presentation-hud {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(14, 19, 34, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 999px;
+      padding: 8px 24px;
+      z-index: 99;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--accent-cyan-glow);
+      align-items: center;
+      gap: 16px;
+    }
+
+    body.presentation-mode .presentation-hud {
+      display: flex;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 992px) {
+      .columns-grid {
+        grid-template-columns: 1fr;
+      }
+      .how-it-works-grid {
+        grid-template-columns: 1fr;
+      }
+      .chart-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .hero-title {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app-container {
+        padding: 16px 14px 60px 14px;
+      }
+      .navbar {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .search-bar-outer {
+        padding: 5px 6px 5px 16px;
+      }
+      .search-btn {
+        padding: 10px 18px;
+        font-size: 0.88rem;
+      }
+      .hero-title {
+        font-size: 1.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow & Orbital Background -->
+  <div class="ambient-glow-top"></div>
+  <canvas id="orbit-canvas"></canvas>
+
+  <!-- Presentation Mode Floating HUD -->
+  <div class="presentation-hud">
+    <span style="font-size: 0.82rem; font-weight: 700; color: var(--accent-cyan); letter-spacing: 0.06em;">
+      PRESENTATION MODE ACTIVE
+    </span>
+    <button class="btn-secondary" onclick="togglePresentationMode()" style="padding: 5px 12px; font-size: 0.78rem;">
+      Exit (Esc)
+    </button>
+  </div>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+
+    <!-- NAVIGATION BAR -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="brand-logo-wrap">
+          <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="50" rx="44" ry="18" stroke="#00F0FF" stroke-width="2.5" transform="rotate(-30 50 50)" opacity="0.85" />
+            <ellipse cx="50" cy="50" rx="44" ry="18" stroke="#8B5CF6" stroke-width="2.5" transform="rotate(30 50 50)" opacity="0.85" />
+            <circle cx="50" cy="50" r="10" fill="url(#coreGradient)" />
+            <circle cx="86" cy="30" r="4.5" fill="#00F0FF" />
+            <circle cx="16" cy="72" r="4" fill="#8B5CF6" />
+            <defs>
+              <radialGradient id="coreGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00F0FF" />
+                <stop offset="60%" stop-color="#6366F1" />
+                <stop offset="100%" stop-color="#8B5CF6" />
+              </radialGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-title">ORBIT</span>
+          <span class="brand-tagline">Search Intelligence</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="badge-lab">
+          <span class="badge-pulse"></span>
+          AI Lab Edition
+        </div>
+        <button class="btn-secondary btn-recalc" id="recalc-btn" onclick="handleRecalculateSurfer()" title="Rerun 100,000 Monte Carlo Moves">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/>
+          </svg>
+          Recalculate Surfer
+        </button>
+        <button class="btn-secondary" onclick="openDatasetModal()" title="Inspect complete 24-page network graph">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+          Dataset Graph
+        </button>
+        <button class="btn-secondary" onclick="togglePresentationMode()" id="pres-btn" title="Toggle classroom projector layout">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          Present
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-pretitle">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
+        SEARCH INTELLIGENCE LAB
+      </div>
+      <h1 class="hero-title">
+        The Science Behind <br>
+        <span class="gradient-text">What You Find.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Explore how web search evolved from crude keyword frequency matching (1997) to the revolutionary link-based random surfer authority model (1998).
+      </p>
+
+      <!-- Search Input Box -->
+      <div class="search-wrapper">
+        <div class="search-bar-outer">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Search the 1998 web graph (e.g. pizza, cricket, movie, exam)..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="clear-btn" class="clear-btn" onclick="clearSearchInput()" title="Clear search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <button class="search-btn" id="search-btn" onclick="searchPages()">
+            SEARCH
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 4 Example Search Chips -->
+        <div class="chips-container">
+          <span class="chips-label">Examples:</span>
+          <button class="chip-btn active" data-term="pizza" onclick="selectChip('pizza')">🍕 Pizza</button>
+          <button class="chip-btn" data-term="cricket" onclick="selectChip('cricket')">🏏 Cricket</button>
+          <button class="chip-btn" data-term="movie" onclick="selectChip('movie')">🎬 Movie</button>
+          <button class="chip-btn" data-term="exam" onclick="selectChip('exam')">📝 Exam</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE SURFER LAB: LIVE SIMULATION STATISTICS -->
+    <section class="surfer-lab-card">
+      <div class="lab-header">
+        <div class="lab-title-group">
+          <div class="lab-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h2 class="lab-title">The Surfer Lab</h2>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">Live Monte Carlo Markov Chain Telemetry</div>
+          </div>
+        </div>
+        <div class="lab-badge">
+          Status: Converged (100,000 / 100,000 steps)
+        </div>
+      </div>
+
+      <!-- 6 Metrics Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Moves</div>
+          <div class="stat-value" id="stat-moves">100,000</div>
+          <div class="stat-subtext">Simulation steps</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Damping Factor (d)</div>
+          <div class="stat-value">0.85</div>
+          <div class="stat-subtext">85% Link traversal probability</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Boredom Jump (1 - d)</div>
+          <div class="stat-value">15.0%</div>
+          <div class="stat-subtext">Random teleportation rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Graph Corpus</div>
+          <div class="stat-value" id="stat-corpus">24 Pages</div>
+          <div class="stat-subtext">Interconnected web nodes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Matching Pages</div>
+          <div class="stat-value" id="stat-matches" style="color: var(--accent-cyan);">6</div>
+          <div class="stat-subtext">Filtered for active search</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Network Backlinks</div>
+          <div class="stat-value" id="stat-links">68 Links</div>
+          <div class="stat-subtext">Total citation edges</div>
+        </div>
+      </div>
+
+      <!-- Surfer Behavior Explainer Banner -->
+      <div class="surfer-explainer-banner">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <div>
+          <strong>How the Random Surfer works:</strong> The surfer begins at a random page and executes 100,000 steps. At every step, there is an <span class="explainer-highlight">85% probability</span> of following an outgoing link and a <span class="explainer-highlight">15% probability</span> of getting bored and jumping to any page at random (or escaping dead ends). Pages frequently linked by other respected pages accumulate high visit densities.
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH RESULTS SECTION: TWO DIVERGENT ALGORITHMS -->
+    <section class="results-section">
+      <div class="results-query-bar">
+        <div class="query-indicator">
+          <span>Comparing algorithms for query:</span>
+          <span class="query-tag" id="current-query-tag">pizza</span>
+        </div>
+        <div class="matches-count-badge" id="matches-summary">
+          Found 6 matching documents across the web graph
+        </div>
+      </div>
+
+      <!-- Two Side-by-Side Panels -->
+      <div class="columns-grid" id="columns-container">
+        
+        <!-- COLUMN 1: THE OLD WEB (1997) -->
+        <div class="algorithm-column">
+          <div class="column-header-card col-1997">
+            <span class="col-era-tag">ALGORITHM 1: 1997</span>
+            <h3 class="col-title">THE OLD WEB</h3>
+            <p class="col-desc">
+              Relevance through keyword frequency. Counts how many times the word appears in the document.
+            </p>
+            <div class="col-stats-row">
+              <span>Strategy: Keyword Frequency Count</span>
+              <span id="col1-top-stat">Top: 11 matches</span>
+            </div>
+          </div>
+          <!-- Results List 1997 -->
+          <div class="result-list" id="results-1997">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- COLUMN 2: THE NEW WEB (1998) -->
+        <div class="algorithm-column">
+          <div class="column-header-card col-1998">
+            <span class="col-era-tag">ALGORITHM 2: 1998</span>
+            <h3 class="col-title">THE NEW WEB</h3>
+            <p class="col-desc">
+              Authority through simulated user behaviour. The random-surfer model rewards authoritative citations.
+            </p>
+            <div class="col-stats-row">
+              <span>Strategy: 100,000-Move Random Surfer</span>
+              <span id="col2-top-stat">Top: 9.2% visits</span>
+            </div>
+          </div>
+          <!-- Results List 1998 -->
+          <div class="result-list" id="results-1998">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DATA VISUALISATION: TWO ALGORITHMS, TWO PERSPECTIVES -->
+    <section class="vis-section">
+      <div class="section-header">
+        <div class="section-eyebrow">Interactive Telemetry & Comparison</div>
+        <h2 class="section-title">TWO ALGORITHMS. TWO DIFFERENT PERSPECTIVES.</h2>
+        <p class="section-subtitle">
+          Observe how pages transform in rank. In 1997, low-quality pages stuffed with keywords dominated search results. In 1998, link authority pushed authentic, highly referenced community hubs to the top.
+        </p>
+      </div>
+
+      <!-- Comparative Bar Visualizer -->
+      <div class="chart-container" id="visualisation-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS: HISTORICAL ARCHITECTURAL EVOLUTION -->
+    <section class="vis-section">
+      <div class="section-header">
+        <div class="section-eyebrow">Theoretical Foundations</div>
+        <h2 class="section-title">HOW IT WORKS: 1997 vs 1998</h2>
+        <p class="section-subtitle">
+          Understanding the mathematical difference between lexical matching and graph centrality.
+        </p>
+      </div>
+
+      <div class="how-it-works-grid">
+        <!-- 1997 Explanation -->
+        <div class="tech-card tech-1997">
+          <span class="tech-badge">1997 Architecture</span>
+          <h3 class="tech-title">1997 — KEYWORD MATCHING</h3>
+          <p class="tech-body">
+            Early search engines (like Lycos, WebCrawler, and early AltaVista) parsed web pages as isolated bags of words. They ranked pages primarily by how frequently a user's query appeared in the document text and HTML tags.
+          </p>
+          <div class="diagram-box">
+            <div class="diagram-step">
+              <span class="step-num">1</span>
+              <span>Web crawler collects page text into an inverted index</span>
+            </div>
+            <div class="diagram-step">
+              <span class="step-num">2</span>
+              <span>Query is matched against word count per document</span>
+            </div>
+            <div class="diagram-step">
+              <span class="step-num">3</span>
+              <span style="color: var(--rose);">Vulnerable: Spammers repeat keywords 50× to claim rank #1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1998 Explanation -->
+        <div class="tech-card tech-1998">
+          <span class="tech-badge">1998 Architecture</span>
+          <h3 class="tech-title">1998 — LINK AUTHORITY (PAGERANK)</h3>
+          <p class="tech-body">
+            Larry Page and Sergey Brin modeled the web as a directed graph. A hyperlink from Page A to Page B represents a citation of trust. The random surfer simulates human browsing across this topology.
+          </p>
+          <div class="diagram-box">
+            <div class="diagram-step">
+              <span class="step-num">1</span>
+              <span>Graph topology constructed from all outbound hyperlinks</span>
+            </div>
+            <div class="diagram-step">
+              <span class="step-num">2</span>
+              <span>Surfer traverses links (85%) with occasional random jumps (15%)</span>
+            </div>
+            <div class="diagram-step">
+              <span class="step-num">3</span>
+              <span style="color: var(--accent-cyan);">Robust: Keyword spam without incoming links receives ~0% authority</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="text-align: center; color: var(--text-dim); font-size: 0.8rem; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+      ORBIT SEARCH INTELLIGENCE LAB • 100,000-Move Monte Carlo Random Surfer • Built for First-Year AI Demonstration
+    </footer>
+
+  </div>
+
+  <!-- DATASET INSPECTOR MODAL -->
+  <div class="modal-overlay" id="dataset-modal" onclick="handleModalOverlayClick(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Web Graph Corpus: 24-Node Topology</h3>
+          <div style="font-size: 0.78rem; color: var(--accent-cyan);">
+            Curated Sample Dataset Covering Pizza, Cricket, Movies and Exams
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDatasetModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 16px;">
+          This dataset contains 24 interconnected web pages with authentic outgoing links. Notice that spam pages (#4, #10, #15, #22) repeat keywords heavily but have zero incoming citations.
+        </p>
+        <table class="dataset-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Page Title & URL</th>
+              <th>Links To</th>
+              <th>In-Links</th>
+              <th>Surfer %</th>
+            </tr>
+          </thead>
+          <tbody id="dataset-table-body">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT: DATASET, ALGORITHMS, VISUALISATIONS & CONTROLS
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       1. WEB GRAPH DATASET (24 Interconnected Pages across 4 Topics)
+       Identified as: Sample Dataset (Curated 24-Node Multi-Domain Graph)
+       Preserves: page, url, title, text, links_to
+       ========================================================================== */
+    const DATASET = [
+      // --- TOPIC 1: PIZZA (Pages 1 to 6) ---
+      {
+        page: 1,
+        url: "https://tonys-original-pizza.com/menu",
+        title: "Tony's Authentic Wood-Fired Pizza & Trattoria",
+        text: "Welcome to Tony's authentic pizzeria in downtown. We bake traditional stone oven pizza using imported mozzarella, san marzano tomatoes, fresh basil, and hand-stretched dough. Our pizza specials change daily.",
+        links_to: "2;3;5;13"
+      },
+      {
+        page: 2,
+        url: "https://cityguide-eats.org/best-pizza-spots",
+        title: "Metro City Guide: Best Food & Local Eats",
+        text: "Looking for top dining? From classic artisanal pizza crusts to modern street cuisine, discover our top culinary picks across the city.",
+        links_to: "1;3;9;17"
+      },
+      {
+        page: 3,
+        url: "https://campuslife-deals.edu/student-dining",
+        title: "Campus Student Dining & Budget Deals",
+        text: "Students can grab a late night pizza slice at a discount near campus quad, or study over fresh coffee and snacks.",
+        links_to: "1;2;13;14;19"
+      },
+      {
+        page: 4,
+        url: "https://geocities.ws/free-stuff-99/pizza-heaven",
+        title: "FREE PIZZA DEALS PIZZA PIZZA SPAM ARCHIVE",
+        text: "Cheap pizza buy pizza best pizza pizza pizza pizza pizza pizza pizza pizza discount pizza delivery now",
+        links_to: "1"
+      },
+      {
+        page: 5,
+        url: "https://italian-culinary-archive.org/history",
+        title: "Mediterranean Culinary History & Heritage",
+        text: "Neapolitan bakers transformed simple flatbread into the beloved modern pizza during the late nineteenth century.",
+        links_to: "1;2;17"
+      },
+      {
+        page: 6,
+        url: "https://quickrecipes-weekly.net/microwave-snacks",
+        title: "Quick 5-Minute Microwave Dorm Snacks",
+        text: "Make mini pita pizza snacks and quick noodles in your dorm microwave with simple pantry ingredients.",
+        links_to: "1;3"
+      },
+
+      // --- TOPIC 2: CRICKET (Pages 7 to 12) ---
+      {
+        page: 7,
+        url: "https://cric-portal-archive.org/1998-world-cup",
+        title: "International Cricket Records & Tournament Archive",
+        text: "Complete statistics, live scorecards, match summaries, and historical archives for international test and one-day cricket championships worldwide.",
+        links_to: "8;9;13;19"
+      },
+      {
+        page: 8,
+        url: "https://global-sports-wire.com/news-roundup",
+        title: "Global Sports Wire: Headlines & Season Fixtures",
+        text: "Catch today's action in athletic leagues, premier cricket matches, football tournaments, and tennis grand slam circuits.",
+        links_to: "7;9;17"
+      },
+      {
+        page: 9,
+        url: "https://university-recreation.edu/sports-clubs",
+        title: "University Athletics & Campus Sports Clubs",
+        text: "Join our collegiate athletics teams including soccer, rowing, and the student cricket club practicing on the north lawn.",
+        links_to: "3;7;8;13"
+      },
+      {
+        page: 10,
+        url: "https://angelfire.com/sports/cricket-fanatics-win",
+        title: "CRICKET CRICKET CRICKET LIVE SCORES CRICKET BETS",
+        text: "Cricket match cricket score cricket betting cricket predictions cricket tips cricket fan cricket cricket cricket cricket",
+        links_to: "7"
+      },
+      {
+        page: 11,
+        url: "https://bio-encyclopedia.org/insecta/gryllidae",
+        title: "Field Entomology: The Gryllidae Family",
+        text: "The field cricket is an omnivorous insect renowned for its rhythmic chirping produced by stridulation of the wings.",
+        links_to: "7;12;16"
+      },
+      {
+        page: 12,
+        url: "https://science-nature-digest.org/night-sounds",
+        title: "Acoustic Ecology: Sounds of the Forest at Dusk",
+        text: "Nightfall brings an orchestra of nocturnal sounds, from the high pitch cricket call to frogs along the wetlands.",
+        links_to: "7;11;16"
+      },
+
+      // --- TOPIC 3: MOVIE (Pages 13 to 18) ---
+      {
+        page: 13,
+        url: "https://film-database-central.org/titles/1998",
+        title: "The Film Database: Cinema Index & Reviews",
+        text: "Search thousands of cinema releases, cast biographies, director filmographies, box office statistics, and movie reviews from accredited critics.",
+        links_to: "14;16;17;18;19"
+      },
+      {
+        page: 14,
+        url: "https://campus-cinema-society.edu/screenings",
+        title: "Campus Film Guild: Weekly Indie & Classic Screenings",
+        text: "Our campus society hosts weekly movie screenings in the auditorium followed by lively open discussions.",
+        links_to: "3;13;17"
+      },
+      {
+        page: 15,
+        url: "https://geocities.ws/hollywood-watcher/vault",
+        title: "FREE MOVIE DOWNLOADS MOVIE MOVIE MOVIE TRAILERS",
+        text: "Movie clips free movie stream movie poster movie download movie news movie teaser movie movie movie movie cinema",
+        links_to: "13"
+      },
+      {
+        page: 16,
+        url: "https://arts-and-culture-weekly.com/screenplay",
+        title: "The Screenwriter's Craft: Narrative & Dialogue",
+        text: "Learn how iconic screenwriters craft dramatic tension, memorable dialogue, and cinematic rhythm for feature movie productions.",
+        links_to: "13;14;20"
+      },
+      {
+        page: 17,
+        url: "https://downtown-odeon.com/showtimes",
+        title: "Odeon Downtown Cinema: Showtimes & Concessions",
+        text: "Grab fresh buttered popcorn and enjoy the latest blockbuster movie on our premier 70mm curved screen.",
+        links_to: "1;2;13"
+      },
+      {
+        page: 18,
+        url: "https://popculture-pulse.net/oscars-preview",
+        title: "Pop Culture Pulse: Academy Awards & Nominations",
+        text: "Industry critics review each nominated movie, predicting this year's frontrunners for Best Picture and Director.",
+        links_to: "1;13;16;17"
+      },
+
+      // --- TOPIC 4: EXAM (Pages 19 to 24) ---
+      {
+        page: 19,
+        url: "https://central-university.edu/registrar/exams",
+        title: "University Registrar: Final Exam Schedules & Halls",
+        text: "Official portal for undergraduate and graduate exam schedules, seating allocations, hall regulations, and final semester grade submissions.",
+        links_to: "3;9;14;20;21"
+      },
+      {
+        page: 20,
+        url: "https://student-success-hub.edu/study-strategies",
+        title: "Academic Success Center: Revision & Time Management",
+        text: "Master your semester with structured revision timetables, active recall flashcards, and calm exam preparation techniques.",
+        links_to: "3;19;21"
+      },
+      {
+        page: 21,
+        url: "https://campus-health-wellness.edu/stress-relief",
+        title: "Student Health & Wellness: Managing Academic Pressure",
+        text: "Tips for staying healthy, sleeping well, and maintaining balance during midterms and end of term exam week.",
+        links_to: "19;20"
+      },
+      {
+        page: 22,
+        url: "https://study-hacks-99.tripod.com/leaked-answers",
+        title: "EXAM EXAM EXAM CHEAT CODES EXAM LEAKS EXAM TIPS",
+        text: "Pass your exam easy exam questions exam answers exam prep exam cram exam exam exam exam exam guaranteed",
+        links_to: "19"
+      },
+      {
+        page: 23,
+        url: "https://med-school-admissions.org/mcat-overview",
+        title: "Medical College Admissions: Standardized Testing",
+        text: "Comprehensive guide to the entrance exam format, biological sciences sections, practice question banks, and scoring percentiles.",
+        links_to: "19;20"
+      },
+      {
+        page: 24,
+        url: "https://state-bar-association.org/licensing-exam",
+        title: "State Bar Licensing: Professional Qualifications",
+        text: "Review syllabus requirements, character affidavits, and testing dates for the upcoming state jurisprudence exam.",
+        links_to: "19;23"
+      }
+    ];
+
+    // Normalize outgoing links into JavaScript number arrays for quick access
+    const PAGES = DATASET.map(item => {
+      const parsedLinks = typeof item.links_to === "string"
+        ? item.links_to.split(";").map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n))
+        : (item.links_to || []);
+      return {
+        ...item,
+        parsedLinks: parsedLinks
+      };
+    });
+
+    // Lookup map by page id
+    const PAGE_MAP = {};
+    PAGES.forEach(p => { PAGE_MAP[p.page] = p; });
+
+    /* ==========================================================================
+       2. STATE MANAGEMENT
+       ========================================================================== */
+    let currentSurferScores = {};     // { pageId: percentage }
+    let currentSurferVisits = {};     // { pageId: visitCount }
+    let incomingLinkCounts = {};      // { pageId: count }
+    let currentActiveQuery = "pizza";
+    let isPresentationMode = false;
+
+    /* ==========================================================================
+       3. ALGORITHM FUNCTIONS
+       ========================================================================== */
+
+    /**
+     * Calculates the number of incoming links (citations) for each page in the graph.
+     */
+    function calculateIncomingLinks() {
+      const incoming = {};
+      PAGES.forEach(p => { incoming[p.page] = 0; });
+      PAGES.forEach(p => {
+        p.parsedLinks.forEach(targetId => {
+          if (incoming[targetId] !== undefined) {
+            incoming[targetId]++;
+          }
+        });
+      });
+      return incoming;
+    }
+
+    /**
+     * Random Surfer Simulation (1998 Algorithm):
+     * 1. Start on a randomly selected page.
+     * 2. Execute exactly 100,000 moves:
+     *    - 15% boredom jump (or when page has no outgoing links).
+     *    - 85% click a random outgoing link.
+     * 3. Count page reached after each move (starting page not counted).
+     * 4. Total visits = exactly 100,000.
+     * 5. Percentage = (visits / 100,000) * 100. Sum = 100.0%.
+     */
+    function runSurferSimulation() {
+      const TOTAL_MOVES = 100000;
+      const visits = {};
+      PAGES.forEach(p => { visits[p.page] = 0; });
+
+      // Start on a random page
+      let currentPage = PAGES[Math.floor(Math.random() * PAGES.length)];
+
+      for (let i = 0; i < TOTAL_MOVES; i++) {
+        const jump = Math.random() < 0.15;
+        if (jump || !currentPage.parsedLinks || currentPage.parsedLinks.length === 0) {
+          // 15% random teleportation or dead-end escape
+          currentPage = PAGES[Math.floor(Math.random() * PAGES.length)];
+        } else {
+          // 85% follow random outgoing link
+          const targetId = currentPage.parsedLinks[Math.floor(Math.random() * currentPage.parsedLinks.length)];
+          currentPage = PAGE_MAP[targetId] || PAGES[Math.floor(Math.random() * PAGES.length)];
+        }
+        // Count page visited
+        visits[currentPage.page]++;
+      }
+
+      // Compute percentages
+      const scores = {};
+      PAGES.forEach(p => {
+        scores[p.page] = (visits[p.page] / TOTAL_MOVES) * 100;
+      });
+
+      currentSurferVisits = visits;
+      currentSurferScores = scores;
+      return scores;
+    }
+
+    /**
+     * Counts whole-word occurrences of the search term in text (1997 Algorithm).
+     * Case-insensitive, matches whole words only.
+     */
+    function countWordMatches(text, searchWord) {
+      if (!searchWord || !text) return 0;
+      const cleanWord = searchWord.trim();
+      if (!cleanWord) return 0;
+      // Escape regex special characters
+      const escaped = cleanWord.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp("\\b" + escaped + "\\b", "gi");
+      const matches = text.match(regex);
+      return matches ? matches.length : 0;
+    }
+
+    /**
+     * Safely escapes HTML entities to prevent XSS.
+     */
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    /**
+     * Highlights search word occurrences inside text.
+     */
+    function highlightSearchWord(text, searchWord) {
+      const safe = escapeHtml(text);
+      if (!searchWord || !searchWord.trim()) return safe;
+      const cleanWord = searchWord.trim();
+      const escaped = cleanWord.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp("(\\b" + escaped + "\\b)", "gi");
+      return safe.replace(regex, '<mark class="highlight">$1</mark>');
+    }
+
+    /* ==========================================================================
+       4. SEARCH & DISPLAY LOGIC
+       ========================================================================== */
+
+    /**
+     * Main search controller.
+     */
+    function searchPages(termOverride) {
+      const inputEl = document.getElementById("search-input");
+      const query = (termOverride !== undefined ? termOverride : inputEl.value).trim();
+      currentActiveQuery = query;
+
+      if (termOverride !== undefined) {
+        inputEl.value = termOverride;
+      }
+
+      // Update clear button visibility
+      const clearBtn = document.getElementById("clear-btn");
+      clearBtn.style.display = query.length > 0 ? "flex" : "none";
+
+      // Update chips visual state
+      document.querySelectorAll(".chip-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-term") === query.toLowerCase());
+      });
+
+      // Filter pages containing the keyword as a whole word
+      const matchingPages = [];
+      PAGES.forEach(p => {
+        const count = countWordMatches(p.text, query);
+        if (count > 0) {
+          matchingPages.push({
+            ...p,
+            keywordCount: count,
+            surferScore: currentSurferScores[p.page] || 0,
+            incomingLinks: incomingLinkCounts[p.page] || 0
+          });
+        }
+      });
+
+      // Update interface
+      displayResults(query, matchingPages);
+      updateStatistics(query, matchingPages);
+      renderVisualisation(matchingPages);
+    }
+
+    /**
+     * Renders search results in the two side-by-side columns.
+     */
+    function displayResults(query, matchingPages) {
+      const colContainer = document.getElementById("columns-container");
+      const list1997 = document.getElementById("results-1997");
+      const list1998 = document.getElementById("results-1998");
+      const currentQueryTag = document.getElementById("current-query-tag");
+      const matchesSummary = document.getElementById("matches-summary");
+      const col1Stat = document.getElementById("col1-top-stat");
+      const col2Stat = document.getElementById("col2-top-stat");
+
+      currentQueryTag.textContent = query || "(empty query)";
+      matchesSummary.textContent = `Found ${matchingPages.length} matching documents across the web graph`;
+
+      // Handle Empty Results
+      if (matchingPages.length === 0) {
+        colContainer.innerHTML = `
+          <div class="empty-state-box">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h3 class="empty-title">Digital Tumbleweeds in Hyperspace</h3>
+            <p class="empty-desc">
+              Our 1998 random surfer completed 100,000 hops across the web graph and found zero pages mentioning "<strong>${escapeHtml(query)}</strong>".
+              <br><br>
+              Try clicking one of our pre-indexed lab categories:
+            </p>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+              <button class="chip-btn" onclick="selectChip('pizza')">🍕 Pizza</button>
+              <button class="chip-btn" onclick="selectChip('cricket')">🏏 Cricket</button>
+              <button class="chip-btn" onclick="selectChip('movie')">🎬 Movie</button>
+              <button class="chip-btn" onclick="selectChip('exam')">📝 Exam</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Reconstruct column markup if it was replaced by empty-state
+      if (!list1997 || !list1998) {
+        colContainer.innerHTML = `
+          <div class="algorithm-column">
+            <div class="column-header-card col-1997">
+              <span class="col-era-tag">ALGORITHM 1: 1997</span>
+              <h3 class="col-title">THE OLD WEB</h3>
+              <p class="col-desc">Relevance through keyword frequency. Counts how many times the word appears in the document.</p>
+              <div class="col-stats-row">
+                <span>Strategy: Keyword Frequency Count</span>
+                <span id="col1-top-stat"></span>
+              </div>
+            </div>
+            <div class="result-list" id="results-1997"></div>
+          </div>
+          <div class="algorithm-column">
+            <div class="column-header-card col-1998">
+              <span class="col-era-tag">ALGORITHM 2: 1998</span>
+              <h3 class="col-title">THE NEW WEB</h3>
+              <p class="col-desc">Authority through simulated user behaviour. The random-surfer model rewards authoritative citations.</p>
+              <div class="col-stats-row">
+                <span>Strategy: 100,000-Move Random Surfer</span>
+                <span id="col2-top-stat"></span>
+              </div>
+            </div>
+            <div class="result-list" id="results-1998"></div>
+          </div>
+        `;
+      }
+
+      const activeList1997 = document.getElementById("results-1997");
+      const activeList1998 = document.getElementById("results-1998");
+      const activeCol1Stat = document.getElementById("col1-top-stat");
+      const activeCol2Stat = document.getElementById("col2-top-stat");
+
+      // 1. Sort Left Column: Keyword Count Descending (1997 Old Way)
+      const ranked1997 = [...matchingPages].sort((a, b) => b.keywordCount - a.keywordCount);
+      const maxKeywords = ranked1997[0].keywordCount || 1;
+      activeCol1Stat.textContent = `Top: ${ranked1997[0].keywordCount} matches`;
+
+      // 2. Sort Right Column: Surfer Score Descending (1998 Surfer Way)
+      const ranked1998 = [...matchingPages].sort((a, b) => b.surferScore - a.surferScore);
+      const maxSurferScore = ranked1998[0].surferScore || 1;
+      activeCol2Stat.textContent = `Top: ${ranked1998[0].surferScore.toFixed(1)}% visits`;
+
+      // Render 1997 Cards
+      activeList1997.innerHTML = ranked1997.map((item, idx) => {
+        const rank = idx + 1;
+        const isTop = rank === 1;
+        const progressPct = Math.round((item.keywordCount / maxKeywords) * 100);
+        const isSpam = item.keywordCount >= 8 && item.incomingLinks <= 1;
+
+        return `
+          <div class="result-card ${isTop ? 'top-rank-1997' : ''}">
+            <div class="card-top-bar">
+              <div class="rank-and-url">
+                <span class="rank-badge">#${rank}</span>
+                <span class="page-url">${escapeHtml(item.url)}</span>
+              </div>
+              ${isSpam ? `<span class="spam-warning-badge">⚠️ Keyword Stuffed</span>` : ''}
+            </div>
+            <h4 class="page-title">${escapeHtml(item.title)}</h4>
+            <p class="page-snippet">${highlightSearchWord(item.text, query)}</p>
+            <div class="card-footer">
+              <div class="score-container">
+                <span class="score-badge score-1997">KEYWORD MATCHES: ${item.keywordCount}</span>
+                <div class="score-progress-bg">
+                  <div class="score-progress-bar bar-1997" style="width: ${progressPct}%"></div>
+                </div>
+              </div>
+              <span style="font-size: 0.72rem; color: var(--text-dim);">Doc ID: #${item.page}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Render 1998 Cards
+      activeList1998.innerHTML = ranked1998.map((item, idx) => {
+        const rank = idx + 1;
+        const isTop = rank === 1;
+        const progressPct = Math.min(100, Math.round((item.surferScore / maxSurferScore) * 100));
+
+        return `
+          <div class="result-card ${isTop ? 'top-rank-1998' : ''}">
+            <div class="card-top-bar">
+              <div class="rank-and-url">
+                <span class="rank-badge">#${rank}</span>
+                <span class="page-url">${escapeHtml(item.url)}</span>
+              </div>
+              <span class="links-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                Links in: ${item.incomingLinks}
+              </span>
+            </div>
+            <h4 class="page-title">${escapeHtml(item.title)}</h4>
+            <p class="page-snippet">${highlightSearchWord(item.text, query)}</p>
+            <div class="card-footer">
+              <div class="score-container">
+                <span class="score-badge score-1998">SURFER SCORE: ${item.surferScore.toFixed(1)}%</span>
+                <div class="score-progress-bg">
+                  <div class="score-progress-bar bar-1998" style="width: ${progressPct}%"></div>
+                </div>
+              </div>
+              <span style="font-size: 0.72rem; color: var(--text-dim);">${(currentSurferVisits[item.page] || 0).toLocaleString()} visits</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /**
+     * Renders comparative visualization and rank-shift analysis.
+     */
+    function renderVisualisation(matchingPages) {
+      const container = document.getElementById("visualisation-container");
+      if (!matchingPages || matchingPages.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 20px;">No active results to compare.</div>`;
+        return;
+      }
+
+      // Rank mapping
+      const rankMap1997 = {};
+      [...matchingPages].sort((a, b) => b.keywordCount - a.keywordCount).forEach((p, idx) => {
+        rankMap1997[p.page] = idx + 1;
+      });
+
+      const rankMap1998 = {};
+      [...matchingPages].sort((a, b) => b.surferScore - a.surferScore).forEach((p, idx) => {
+        rankMap1998[p.page] = idx + 1;
+      });
+
+      const maxKeywords = Math.max(...matchingPages.map(p => p.keywordCount), 1);
+      const maxSurfer = Math.max(...matchingPages.map(p => p.surferScore), 0.1);
+
+      // Render comparison rows sorted by 1998 authority rank
+      const sortedBy1998 = [...matchingPages].sort((a, b) => rankMap1998[a.page] - rankMap1998[b.page]);
+
+      container.innerHTML = sortedBy1998.map(item => {
+        const r97 = rankMap1997[item.page];
+        const r98 = rankMap1998[item.page];
+        const delta = r97 - r98; // positive means climbed up in 1998
+        let shiftHtml = `<span class="shift-indicator shift-same">No Change (#${r98})</span>`;
+        if (delta > 0) {
+          shiftHtml = `<span class="shift-indicator shift-up">▲ Climbed +${delta} (#${r97} → #${r98})</span>`;
+        } else if (delta < 0) {
+          shiftHtml = `<span class="shift-indicator shift-down">▼ Dropped ${delta} (#${r97} → #${r98})</span>`;
+        }
+
+        const kwBarPct = Math.round((item.keywordCount / maxKeywords) * 100);
+        const sfBarPct = Math.min(100, Math.round((item.surferScore / maxSurfer) * 100));
+
+        return `
+          <div class="chart-row">
+            <div class="chart-page-info">
+              <span class="chart-page-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</span>
+              <span class="chart-page-url">${escapeHtml(item.url)}</span>
+            </div>
+
+            <!-- 1997 Keyword Bar -->
+            <div class="bar-wrapper">
+              <div class="bar-label-group">
+                <span style="color: var(--gold);">1997 Count: ${item.keywordCount}</span>
+                <span style="color: var(--text-dim);">Rank #${r97}</span>
+              </div>
+              <div class="score-progress-bg">
+                <div class="score-progress-bar bar-1997" style="width: ${kwBarPct}%"></div>
+              </div>
+            </div>
+
+            <!-- Rank Shift Indicator -->
+            <div style="display: flex; justify-content: center;">
+              ${shiftHtml}
+            </div>
+
+            <!-- 1998 Surfer Bar -->
+            <div class="bar-wrapper">
+              <div class="bar-label-group">
+                <span style="color: var(--accent-cyan);">1998 Surfer: ${item.surferScore.toFixed(1)}%</span>
+                <span style="color: #DDD6FE;">Links in: ${item.incomingLinks}</span>
+              </div>
+              <div class="score-progress-bg">
+                <div class="score-progress-bar bar-1998" style="width: ${sfBarPct}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /**
+     * Updates statistics telemetry cards in the Surfer Lab.
+     */
+    function updateStatistics(query, matchingPages) {
+      document.getElementById("stat-corpus").textContent = `${PAGES.length} Pages`;
+      document.getElementById("stat-matches").textContent = `${matchingPages.length} Pages`;
+      
+      let totalIncoming = 0;
+      Object.values(incomingLinkCounts).forEach(v => { totalIncoming += v; });
+      document.getElementById("stat-links").textContent = `${totalIncoming} Links`;
+    }
+
+    /* ==========================================================================
+       5. EVENT HANDLERS & USER INTERACTIONS
+       ========================================================================== */
+
+    function selectChip(term) {
+      searchPages(term);
+    }
+
+    function clearSearchInput() {
+      const inputEl = document.getElementById("search-input");
+      inputEl.value = "";
+      inputEl.focus();
+      searchPages("");
+    }
+
+    function handleRecalculateSurfer() {
+      const btn = document.getElementById("recalc-btn");
+      btn.style.opacity = "0.6";
+      btn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin">
+          <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="10"/>
+        </svg>
+        Simulating...
+      `;
+
+      // Small async timeout so the user sees the re-calculation pulse
+      setTimeout(() => {
+        runSurferSimulation();
+        searchPages(currentActiveQuery);
+        updateDatasetModalTable();
+        btn.style.opacity = "1";
+        btn.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/>
+          </svg>
+          Recalculate Surfer
+        `;
+      }, 150);
+    }
+
+    function togglePresentationMode() {
+      isPresentationMode = !isPresentationMode;
+      document.body.classList.toggle("presentation-mode", isPresentationMode);
+      const presBtn = document.getElementById("pres-btn");
+      presBtn.style.color = isPresentationMode ? "var(--accent-cyan)" : "inherit";
+      presBtn.style.borderColor = isPresentationMode ? "var(--accent-cyan)" : "var(--border-medium)";
+    }
+
+    function openDatasetModal() {
+      updateDatasetModalTable();
+      document.getElementById("dataset-modal").style.display = "flex";
+    }
+
+    function closeDatasetModal() {
+      document.getElementById("dataset-modal").style.display = "none";
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target.id === "dataset-modal") {
+        closeDatasetModal();
+      }
+    }
+
+    function updateDatasetModalTable() {
+      const tbody = document.getElementById("dataset-table-body");
+      if (!tbody) return;
+      tbody.innerHTML = PAGES.map(p => {
+        const surferPct = currentSurferScores[p.page] || 0;
+        const incoming = incomingLinkCounts[p.page] || 0;
+        const outLinks = p.parsedLinks.join(", ") || "(none)";
+        return `
+          <tr>
+            <td style="font-weight: 700; color: var(--accent-cyan);">#${p.page}</td>
+            <td>
+              <div style="font-weight: 600; color: var(--text-bright);">${escapeHtml(p.title)}</div>
+              <div style="font-size: 0.72rem; color: var(--text-dim); font-family: monospace;">${escapeHtml(p.url)}</div>
+            </td>
+            <td style="font-family: monospace; color: var(--text-muted);">${outLinks}</td>
+            <td style="font-weight: 700; color: #DDD6FE;">${incoming}</td>
+            <td style="font-weight: 800; color: var(--accent-cyan); font-variant-numeric: tabular-nums;">
+              ${surferPct.toFixed(1)}%
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    /* ==========================================================================
+       6. INTERACTIVE ORBITAL BACKGROUND CANVAS
+       ========================================================================== */
+    function initOrbitalCanvas() {
+      const canvas = document.getElementById("orbit-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      let width, height;
+      let particles = [];
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      // Seed 42 subtle floating web graph nodes
+      for (let i = 0; i < 42; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          radius: Math.random() * 2 + 1,
+          hue: Math.random() < 0.5 ? 185 : 260
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw connections between nearby nodes
+        for (let i = 0; i < particles.length; i++) {
+          const p1 = particles[i];
+          p1.x += p1.vx;
+          p1.y += p1.vy;
+          if (p1.x < 0 || p1.x > width) p1.vx *= -1;
+          if (p1.y < 0 || p1.y > height) p1.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p1.x, p1.y, p1.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p1.hue === 185 ? "rgba(0, 240, 255, 0.4)" : "rgba(139, 92, 246, 0.4)";
+          ctx.fill();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(99, 102, 241, ${0.15 * (1 - dist / 120)})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    /* ==========================================================================
+       7. INITIALIZATION ON PAGE LOAD
+       ========================================================================== */
+    window.addEventListener("DOMContentLoaded", () => {
+      // 1. Calculate graph-wide incoming link citations
+      incomingLinkCounts = calculateIncomingLinks();
+
+      // 2. Run initial 100,000-move Surfer Simulation once on load
+      runSurferSimulation();
+
+      // 3. Initialize background orbital canvas
+      initOrbitalCanvas();
+
+      // 4. Bind Enter key on search input
+      const inputEl = document.getElementById("search-input");
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          searchPages();
+        }
+      });
+      inputEl.addEventListener("input", (e) => {
+        const clearBtn = document.getElementById("clear-btn");
+        clearBtn.style.display = e.target.value.length > 0 ? "flex" : "none";
+      });
+
+      // Bind Escape key to close modal or exit presentation mode
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeDatasetModal();
+          if (isPresentationMode) togglePresentationMode();
+        }
+        if (e.key.toLowerCase() === "p" && e.target.tagName !== "INPUT") {
+          togglePresentationMode();
+        }
+      });
+
+      // 5. Run default search for 'pizza'
+      searchPages("pizza");
+    });
+  </script>
+</body>
+</html>
